@@ -53,14 +53,14 @@ __DATA__
 <input type="text" class="form-control" name="device" value="<%= $device %>" placeholder="Device">
 <p></p>
 <table>
-% my $n = 0;
+% my $n = $size * $size - 1;
 % for my $row (1 .. $size) {
   <tr>
 %   for my $col (1 .. $size) {
     <td>
       <input type="text" class="" name="pad" size="6" value="<%= $params->[$n]{key} || $params->[$n]{text} %>">
     </td>
-%     $n++;
+%     $n--;
 %   }
   </tr>
 % }
