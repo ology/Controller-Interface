@@ -48,7 +48,6 @@ __DATA__
 
 @@ index.html.ep
 % layout 'default';
-% title 'MIDI Controller Interface';
 <p></p>
 <form method="post">
 <input type="text" class="form-control" name="device" value="<%= $device %>" placeholder="Device">
@@ -71,6 +70,7 @@ __DATA__
 </form>
 
 @@ layouts/default.html.ep
+% title 'MIDI Controller Interface';
 <!DOCTYPE html>
 <html lang="en">
   <head>
