@@ -24,8 +24,8 @@ TEXT
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
     my $text =<<"PARAM";
   - event: 'note-on'
-    data: $data
-    text: $p
+    data: '$data'
+    text: '$p'
 PARAM
     $content .= $text;
     $octave++ if scalar(@scale) - 1 == $n % scalar(@scale);
