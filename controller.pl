@@ -29,12 +29,13 @@ TEXT
   my $octave = 1;
   for my $p (@$params) {
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
-    my $text =<<"PARAM";
+    my $input = $p =~ /(?:alt|ctrl|meta|shift|super)/ ? 'key' : 'text';
+    my $trigger =<<"PARAM";
   - event: 'note-on'
     data: '$data'
-    text: '$p'
+    $input: '$p'
 PARAM
-    $content .= $text;
+    $content .= $trigger;
     $octave++ if scalar(@scale) - 1 == $n % scalar(@scale);
     $n++;
   }
