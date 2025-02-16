@@ -29,7 +29,7 @@ TEXT
   my $octave = 1;
   for my $p (@$params) {
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
-    my $input = $p =~ /(?:alt|ctrl|meta|shift|super)/ ? 'key' : 'text';
+    my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
     my $trigger =<<"PARAM";
   - event: 'note-on'
     data: '$data'
