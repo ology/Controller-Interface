@@ -49,7 +49,7 @@ __DATA__
 % title 'MIDI Controller Interface';
 <p></p>
 <form method="post">
-<input type="text" class="form-control" name="device" value="<%= $device %>">
+<input type="text" class="form-control" name="device" value="<%= $device %>" placeholder="Device">
 <p></p>
 <table>
 % my $n = 0;
