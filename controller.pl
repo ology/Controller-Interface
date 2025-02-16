@@ -3,9 +3,16 @@ use Mojolicious::Lite -signatures;
 
 use Mojo::File ();
 use Music::Scales qw(get_scale_notes);
+use YAML qw(LoadFile);
 
 get '/' => sub ($c) {
-  $c->render(template => 'index');
+  my $config = LoadFile('./controller.yaml');
+use Data::Dumper::Compact qw(ddc);
+warn __PACKAGE__,' L',__LINE__,' ',ddc($config->{triggers}, {max_width=>128});
+  $c->render(
+    template => 'index',
+    params   => $config->{triggers},
+  );
 } => 'index';
 
 post '/' => sub ($c) {
@@ -44,12 +51,14 @@ __DATA__
 <p></p>
 <form method="post">
 <table>
+% my $n = 0;
 % for my $row (1 .. 8) {
   <tr>
 %   for my $col (1 .. 8) {
     <td>
-      <input type="text" class="" name="pad" maxlength="10" size="4">
+      <input type="text" class="" name="pad" maxlength="10" size="4" value="<%= $params->[$n]{text} %>">
     </td>
+%     $n++;
 %   }
   </tr>
 % }
