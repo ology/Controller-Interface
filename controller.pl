@@ -7,10 +7,9 @@ use YAML qw(LoadFile);
 
 get '/' => sub ($c) {
   my $config = LoadFile('./controller.yaml');
-use Data::Dumper::Compact qw(ddc);
-warn __PACKAGE__,' L',__LINE__,' ',ddc($config->{triggers}, {max_width=>128});
   $c->render(
     template => 'index',
+    device   => $config->{device},
     params   => $config->{triggers},
   );
 } => 'index';
@@ -50,6 +49,8 @@ __DATA__
 % title 'MIDI Controller Interface';
 <p></p>
 <form method="post">
+<input type="text" class="form-control" name="device" value="<%= $device %>">
+<p></p>
 <table>
 % my $n = 0;
 % for my $row (1 .. 8) {
