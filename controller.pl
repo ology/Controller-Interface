@@ -58,7 +58,7 @@ __DATA__
   <tr>
 %   for my $col (1 .. $size) {
     <td>
-      <input type="text" class="" name="pad" maxlength="10" size="6" value="<%= $params->[$n]{key} || $params->[$n]{text} %>">
+      <input type="text" class="" name="pad" size="6" value="<%= $params->[$n]{key} || $params->[$n]{text} %>">
     </td>
 %     $n++;
 %   }
