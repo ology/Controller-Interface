@@ -1,12 +1,18 @@
 #!/usr/bin/env perl
 use Mojolicious::Lite -signatures;
 
+use Mojo::File ();
+
 get '/' => sub ($c) {
   $c->render(template => 'index');
 } => 'index';
 
 post '/' => sub ($c) {
-  $c->render(template => 'setting');
+  my $params = $c->every_param('pad');
+  my $file = Mojo::File->new('./controller.yaml');
+  my $content = join "\n", @$params;
+  $file->spew($content);
+  $c->redirect_to('index');
 } => 'setting';
 
 app->start;
@@ -22,7 +28,7 @@ __DATA__
   <tr>
 %   for my $col (1 .. 8) {
     <td>
-      <input type="text" class="" name="<%= $row . '-' . $col %>" maxlength="10" size="4">
+      <input type="text" class="" name="pad" maxlength="10" size="4">
     </td>
 %   }
   </tr>
