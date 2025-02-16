@@ -10,6 +10,7 @@ get '/' => sub ($c) {
   $c->render(
     template => 'index',
     device   => $config->{device},
+    size     => 8,
     params   => $config->{triggers},
   );
 } => 'index';
@@ -53,9 +54,9 @@ __DATA__
 <p></p>
 <table>
 % my $n = 0;
-% for my $row (1 .. 8) {
+% for my $row (1 .. $size) {
   <tr>
-%   for my $col (1 .. 8) {
+%   for my $col (1 .. $size) {
     <td>
       <input type="text" class="" name="pad" maxlength="10" size="4" value="<%= $params->[$n]{text} %>">
     </td>
