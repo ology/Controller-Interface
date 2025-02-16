@@ -2,15 +2,35 @@
 use Mojolicious::Lite -signatures;
 
 use Mojo::File ();
+use Music::Scales qw(get_scale_notes);
 
 get '/' => sub ($c) {
   $c->render(template => 'index');
 } => 'index';
 
 post '/' => sub ($c) {
+  my $device = $c->param('device') || 'Synido TempoPAD Z-1';
   my $params = $c->every_param('pad');
+  my @scale = get_scale_notes('C', 'chromatic', 0, '#');
   my $file = Mojo::File->new('./controller.yaml');
-  my $content = join "\n", @$params;
+  my $content =<<"TEXT";
+debug: 1
+device: $device
+triggers:
+TEXT
+  my $n = 0;
+  my $octave = 1;
+  for my $p (@$params) {
+    my $data = $scale[ $n % scalar(@scale) ] . $octave;
+    my $text =<<"PARAM";
+  - event: 'note-on'
+    data: $data
+    text: $p
+PARAM
+    $content .= $text;
+    $octave++ if scalar(@scale) - 1 == $n % scalar(@scale);
+    $n++;
+  }
   $file->spew($content);
   $c->redirect_to('index');
 } => 'setting';
