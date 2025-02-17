@@ -150,7 +150,7 @@ __DATA__
   <tr>
 %   for my $col (1 .. $size) {
 %     my $m = $mapping->{ $n + 1 } - 1;
-    <td class="">
+    <td class="quadrant-<%= $quadrants->{$n} %>">
       <input type="text" class="" name="pad" size="6" value="<%= $params->[$m]{key} || $params->[$m]{text} %>">
     </td>
 %     $n++;
