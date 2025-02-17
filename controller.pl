@@ -116,13 +116,10 @@ TEXT
   for my $n (0 .. $#$params) {
     my $m = mapping()->{ $n + 1 } - 1;
     my $p = $params->[$m];
-    # warn __PACKAGE__,' L',__LINE__,' ',,"N: $n, M: $m, P: $p\n";
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
     my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
     my $trigger =<<"PARAM";
   - event: 'note-on'
-    n: $n
-    m: $m
     data: '$data'
     $input: '$p'
 PARAM
@@ -151,8 +148,6 @@ __DATA__
 %     my $m = $mapping->{ $n + 1 } - 1;
     <td>
       <input type="text" class="" name="pad" size="6" value="<%= $params->[$m]{key} || $params->[$m]{text} %>">
-<!-- <input type="text" class="" name="pad" size="6" value="<%= $m %>"> -->
-<!-- <input type="text" class="" name="pad" size="6" value=""> -->
     </td>
 %     $n++;
 %   }
