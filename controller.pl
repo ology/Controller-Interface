@@ -8,92 +8,93 @@ use YAML qw(LoadFile);
 sub mapping {
   return {
     # pad quadrant => table data index
-     1 => 57,
-     2 => 58,
-     3 => 59,
-     4 => 60,
+     1 => { index => 57, quadrant => '' },
+     2 => { index => 58, quadrant => '' },
+     3 => { index => 59, quadrant => '' },
+     4 => { index => 60, quadrant => '' },
 
-     5 => 49,
-     6 => 50,
-     7 => 51,
-     8 => 52,
+     5 => { index => 49, quadrant => '' },
+     6 => { index => 50, quadrant => '' },
+     7 => { index => 51, quadrant => '' },
+     8 => { index => 52, quadrant => '' },
 
-     9 => 41,
-    10 => 42,
-    11 => 43,
-    12 => 44,
+     9 => { index => 41, quadrant => '' },
+    10 => { index => 42, quadrant => '' },
+    11 => { index => 43, quadrant => '' },
+    12 => { index => 44, quadrant => '' },
 
-    13 => 33,
-    14 => 34,
-    15 => 35,
-    16 => 36,
+    13 => { index => 33, quadrant => '' },
+    14 => { index => 34, quadrant => '' },
+    15 => { index => 35, quadrant => '' },
+    16 => { index => 36, quadrant => '' },
 
-    17 => 25,
-    18 => 26,
-    19 => 27,
-    20 => 28,
+    17 => { index => 25, quadrant => '' },
+    18 => { index => 26, quadrant => '' },
+    19 => { index => 27, quadrant => '' },
+    20 => { index => 28, quadrant => '' },
 
-    21 => 17,
-    22 => 18,
-    23 => 19,
-    24 => 20,
+    21 => { index => 17, quadrant => '' },
+    22 => { index => 18, quadrant => '' },
+    23 => { index => 19, quadrant => '' },
+    24 => { index => 20, quadrant => '' },
 
-    25 =>  9,
-    26 => 10,
-    27 => 11,
-    28 => 12,
+    25 => { index =>  9, quadrant => '' },
+    26 => { index => 10, quadrant => '' },
+    27 => { index => 11, quadrant => '' },
+    28 => { index => 12, quadrant => '' },
 
-    29 =>  1,
-    30 =>  2,
-    31 =>  3,
-    32 =>  4,
+    29 => { index =>  1, quadrant => '' },
+    30 => { index =>  2, quadrant => '' },
+    31 => { index =>  3, quadrant => '' },
+    32 => { index =>  4, quadrant => '' },
 
-    33 => 61,
-    34 => 62,
-    35 => 63,
-    36 => 64,
+    33 => { index => 61, quadrant => '' },
+    34 => { index => 62, quadrant => '' },
+    35 => { index => 63, quadrant => '' },
+    36 => { index => 64, quadrant => '' },
 
-    37 => 53,
-    38 => 54,
-    39 => 55,
-    40 => 56,
+    37 => { index => 53, quadrant => '' },
+    38 => { index => 54, quadrant => '' },
+    39 => { index => 55, quadrant => '' },
+    40 => { index => 56, quadrant => '' },
 
-    41 => 45,
-    42 => 46,
-    43 => 47,
-    44 => 48,
+    41 => { index => 45, quadrant => '' },
+    42 => { index => 46, quadrant => '' },
+    43 => { index => 47, quadrant => '' },
+    44 => { index => 48, quadrant => '' },
 
-    45 => 37,
-    46 => 38,
-    47 => 39,
-    48 => 40,
+    45 => { index => 37, quadrant => '' },
+    46 => { index => 38, quadrant => '' },
+    47 => { index => 39, quadrant => '' },
+    48 => { index => 40, quadrant => '' },
 
-    49 => 29,
-    50 => 30,
-    51 => 31,
-    52 => 32,
+    49 => { index => 29, quadrant => '' },
+    50 => { index => 30, quadrant => '' },
+    51 => { index => 31, quadrant => '' },
+    52 => { index => 32, quadrant => '' },
 
-    53 => 21,
-    54 => 22,
-    55 => 23,
-    56 => 24,
+    53 => { index => 21, quadrant => '' },
+    54 => { index => 22, quadrant => '' },
+    55 => { index => 23, quadrant => '' },
+    56 => { index => 24, quadrant => '' },
 
-    57 => 13,
-    58 => 14,
-    59 => 15,
-    60 => 16,
+    57 => { index => 13, quadrant => '' },
+    58 => { index => 14, quadrant => '' },
+    59 => { index => 15, quadrant => '' },
+    60 => { index => 16, quadrant => '' },
 
-    61 =>  5,
-    62 =>  6,
-    63 =>  7,
-    64 =>  8,
+    61 => { index =>  5, quadrant => '' },
+    62 => { index =>  6, quadrant => '' },
+    63 => { index =>  7, quadrant => '' },
+    64 => { index =>  8, quadrant => '' },
 
   };
 };
 
 get '/' => sub ($c) {
   my $config = LoadFile('./controller.yaml');
-  my %reversed = reverse mapping()->%*;
+  my %mapping = mapping()->%*;
+  my %reversed = map { $mapping{$_}{index} => $_ } keys %mapping;
   $c->render(
     template => 'index',
     device   => $config->{device},
@@ -115,7 +116,7 @@ triggers:
 TEXT
   my $octave = 1;
   for my $n (0 .. $#$params) {
-    my $m = mapping()->{ $n + 1 } - 1;
+    my $m = mapping()->{ $n + 1 }{index} - 1;
     my $p = $params->[$m];
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
     my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
@@ -147,7 +148,7 @@ __DATA__
   <tr>
 %   for my $col (1 .. $size) {
 %     my $m = $mapping->{ $n + 1 } - 1;
-    <td>
+    <td class="">
       <input type="text" class="" name="pad" size="6" value="<%= $params->[$m]{key} || $params->[$m]{text} %>">
     </td>
 %     $n++;
