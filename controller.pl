@@ -119,13 +119,13 @@ TEXT
   my $octave = 1;
   for my $n (0 .. $#$params) {
     my $m = mapping()->{ $n + 1 }{index} - 1;
-    my $p = $params->[$m];
+    my $param = $params->[$m];
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
-    my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
+    my $input = $param =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
     my $trigger = <<"PARAM";
   - event: 'note-on'
     data: '$data'
-    $input: '$p'
+    $input: '$param'
 PARAM
     $content .= $trigger;
     $octave++ if scalar(@scale) - 1 == $n % scalar(@scale);
