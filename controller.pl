@@ -111,7 +111,7 @@ post '/' => sub ($c) {
   my $params = $c->every_param('pad');
   my @scale = get_scale_notes('C', 'chromatic', 0, '#');
   my $file = Mojo::File->new('./controller.yaml');
-  my $content =<<"TEXT";
+  my $content = <<"TEXT";
 debug: 1
 device: $device
 triggers:
@@ -122,7 +122,7 @@ TEXT
     my $p = $params->[$m];
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
     my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
-    my $trigger =<<"PARAM";
+    my $trigger = <<"PARAM";
   - event: 'note-on'
     data: '$data'
     $input: '$p'
