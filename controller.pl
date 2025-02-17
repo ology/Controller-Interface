@@ -132,6 +132,7 @@ PARAM
     $n++;
   }
   $file->spew($content);
+  $c->flash(message => 'Settings updated');
   $c->redirect_to('index');
 } => 'setting';
 
@@ -178,8 +179,11 @@ __DATA__
   <body>
     <p></p>
     <div class="container">
+% if (flash('message')) {
+      <h2 style="color: green;"><%= flash('message') %></h2>
+% }
 % if (flash('error')) {
-      <h2 style="color:red"><%= flash('error') %></h2>
+      <h2 style="color: red;"><%= flash('error') %></h2>
 % }
       <h2><a href="<%= url_for('index') %>"><%= title %></a></h2>
       <%= content %>
