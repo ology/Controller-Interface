@@ -144,7 +144,7 @@ __DATA__
 <form method="post">
 <input type="text" class="form-control" name="device" value="<%= $device %>" placeholder="Device">
 <p></p>
-<table cellpadding="5">
+<table cellpadding="8">
 % my $n = 0;
 % for my $row (1 .. $size) {
   <tr>
