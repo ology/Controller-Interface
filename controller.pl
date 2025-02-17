@@ -143,8 +143,9 @@ __DATA__
 % for my $row (1 .. $size) {
   <tr>
 %   for my $col (1 .. $size) {
+%     my $m = $mapping->{ $n + 1 };
     <td>
-      <input type="text" class="" name="pad" size="6" value="<%= $mapping->{ $n + 1 } %>">
+      <input type="text" class="" name="pad" size="6" value="<%= $m %>">
     </td>
 %     $n++;
 %   }
