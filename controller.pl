@@ -7,6 +7,7 @@ use YAML qw(LoadFile);
 
 sub mapping {
   return {
+    # pad quadrant => table index
      1 => 57,
      2 => 58,
      3 => 59,
