@@ -7,97 +7,98 @@ use YAML qw(LoadFile);
 
 sub mapping {
   return {
-    57 =>  1,
-    58 =>  2,
-    59 =>  3,
-    60 =>  4,
+    57 => 13,
+    58 => 14,
+    59 => 15,
+    60 => 16,
 
-    49 =>  5,
-    50 =>  6,
-    51 =>  7,
-    52 =>  8,
+    49 => 29,
+    50 => 30,
+    51 => 31,
+    52 => 32,
 
-    41 =>  9,
-    42 => 10,
-    43 => 11,
-    44 => 12,
+    41 => 45,
+    42 => 46,
+    43 => 47,
+    44 => 48,
 
-    33 => 13,
-    34 => 14,
-    35 => 15,
-    36 => 16,
+    33 => 61,
+    34 => 62,
+    35 => 63,
+    36 => 64,
 
-    25 => 17,
-    26 => 18,
-    27 => 19,
-    28 => 20,
+    25 =>  9,
+    26 => 10,
+    27 => 11,
+    28 => 12,
 
-    17 => 21,
-    18 => 22,
-    19 => 23,
-    20 => 24,
+    17 => 25,
+    18 => 26,
+    19 => 27,
+    20 => 28,
 
-     9 => 25,
-    10 => 26,
-    11 => 27,
-    12 => 28,
+     9 => 41,
+    10 => 42,
+    11 => 43,
+    12 => 44,
 
-     1 => 29,
-     2 => 30,
-     3 => 31,
-     4 => 32,
+     1 => 57,
+     2 => 58,
+     3 => 59,
+     4 => 60,
 
-    61 => 33,
-    62 => 34,
-    63 => 35,
-    64 => 36,
+    61 =>  5,
+    62 =>  6,
+    63 =>  7,
+    64 =>  8,
 
-    53 => 37,
-    54 => 38,
-    55 => 39,
-    56 => 40,
+    53 => 21,
+    54 => 22,
+    55 => 23,
+    56 => 24,
 
-    45 => 41,
-    46 => 42,
-    47 => 43,
-    48 => 44,
+    45 => 37,
+    46 => 38,
+    47 => 39,
+    48 => 40,
 
-    37 => 45,
-    38 => 46,
-    39 => 47,
-    40 => 48,
+    37 => 53,
+    38 => 54,
+    39 => 55,
+    40 => 56,
 
-    29 => 49,
-    30 => 50,
-    31 => 51,
-    32 => 52,
+    29 =>  1,
+    30 =>  2,
+    31 =>  3,
+    32 =>  4,
 
-    21 => 53,
-    22 => 54,
-    23 => 55,
-    24 => 56,
+    21 => 17,
+    22 => 18,
+    23 => 19,
+    24 => 20,
 
-    13 => 57,
-    14 => 58,
-    15 => 59,
-    16 => 60,
+    13 => 33,
+    14 => 34,
+    15 => 35,
+    16 => 36,
 
-     5 => 61,
-     6 => 62,
-     7 => 63,
-     8 => 64,
+     5 => 49,
+     6 => 50,
+     7 => 51,
+     8 => 52,
 
   };
 };
 
 get '/' => sub ($c) {
   my $config = LoadFile('./controller.yaml');
+  my %reversed = reverse mapping()->%*;
   $c->render(
     template => 'index',
     device   => $config->{device},
     size     => 8,
     params   => $config->{triggers},
-    mapping  => mapping(),
+    mapping  => \%reversed,
   );
 } => 'index';
 
@@ -111,13 +112,17 @@ debug: 1
 device: $device
 triggers:
 TEXT
-  my $n = 0;
   my $octave = 1;
-  for my $p (@$params) {
+  for my $n (0 .. $#$params) {
+    my $m = mapping()->{ $n + 1 } - 1;
+    my $p = $params->[$m];
+    # warn __PACKAGE__,' L',__LINE__,' ',,"N: $n, M: $m, P: $p\n";
     my $data = $scale[ $n % scalar(@scale) ] . $octave;
     my $input = $p =~ /(?:alt|ctrl|meta|shift|super|F\d+)/ ? 'key' : 'text';
     my $trigger =<<"PARAM";
   - event: 'note-on'
+    n: $n
+    m: $m
     data: '$data'
     $input: '$p'
 PARAM
@@ -143,9 +148,11 @@ __DATA__
 % for my $row (1 .. $size) {
   <tr>
 %   for my $col (1 .. $size) {
-%     my $m = $mapping->{ $n + 1 };
+%     my $m = $mapping->{ $n + 1 } - 1;
     <td>
-      <input type="text" class="" name="pad" size="6" value="<%= $m %>">
+      <input type="text" class="" name="pad" size="6" value="<%= $params->[$m]{key} || $params->[$m]{text} %>">
+<!-- <input type="text" class="" name="pad" size="6" value="<%= $m %>"> -->
+<!-- <input type="text" class="" name="pad" size="6" value=""> -->
     </td>
 %     $n++;
 %   }
