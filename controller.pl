@@ -107,7 +107,7 @@ get '/' => sub ($c) {
 } => 'index';
 
 post '/' => sub ($c) {
-  my $device = $c->param('device') || 'Synido TempoPAD Z-1';
+  my $device = $c->param('device') || 'Device';
   my $params = $c->every_param('pad');
   my @scale = get_scale_notes('C', 'chromatic', 0, '#');
   my $file = Mojo::File->new('./controller.yaml');
