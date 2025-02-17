@@ -5,6 +5,91 @@ use Mojo::File ();
 use Music::Scales qw(get_scale_notes);
 use YAML qw(LoadFile);
 
+sub mapping {
+  return {
+    57 =>  1,
+    58 =>  2,
+    59 =>  3,
+    60 =>  4,
+
+    49 =>  5,
+    50 =>  6,
+    51 =>  7,
+    52 =>  8,
+
+    41 =>  9,
+    42 => 10,
+    43 => 11,
+    44 => 12,
+
+    33 => 13,
+    34 => 14,
+    35 => 15,
+    36 => 16,
+
+    25 => 17,
+    26 => 18,
+    27 => 19,
+    28 => 20,
+
+    17 => 21,
+    18 => 22,
+    19 => 23,
+    20 => 24,
+
+     9 => 25,
+    10 => 26,
+    11 => 27,
+    12 => 28,
+
+     1 => 29,
+     2 => 30,
+     3 => 31,
+     4 => 32,
+
+    61 => 33,
+    62 => 34,
+    63 => 35,
+    64 => 36,
+
+    53 => 37,
+    54 => 38,
+    55 => 39,
+    56 => 40,
+
+    45 => 41,
+    46 => 42,
+    47 => 43,
+    48 => 44,
+
+    37 => 45,
+    38 => 46,
+    39 => 47,
+    40 => 48,
+
+    29 => 49,
+    30 => 50,
+    31 => 51,
+    32 => 52,
+
+    21 => 53,
+    22 => 54,
+    23 => 55,
+    24 => 56,
+
+    13 => 57,
+    14 => 58,
+    15 => 59,
+    16 => 60,
+
+     5 => 61,
+     6 => 62,
+     7 => 63,
+     8 => 64,
+
+  };
+};
+
 get '/' => sub ($c) {
   my $config = LoadFile('./controller.yaml');
   $c->render(
@@ -12,6 +97,7 @@ get '/' => sub ($c) {
     device   => $config->{device},
     size     => 8,
     params   => $config->{triggers},
+    mapping  => mapping(),
   );
 } => 'index';
 
@@ -53,14 +139,14 @@ __DATA__
 <input type="text" class="form-control" name="device" value="<%= $device %>" placeholder="Device">
 <p></p>
 <table>
-% my $n = $size * $size - 1;
+% my $n = 0;#$size * $size - 1;
 % for my $row (1 .. $size) {
   <tr>
 %   for my $col (1 .. $size) {
     <td>
-      <input type="text" class="" name="pad" size="6" value="<%= $params->[$n]{key} || $params->[$n]{text} %>">
+      <input type="text" class="" name="pad" size="6" value="<%= $n + 1 %>">
     </td>
-%     $n--;
+%     $n++;
 %   }
   </tr>
 % }
