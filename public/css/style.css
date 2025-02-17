@@ -28,3 +28,19 @@ a:active {
   font-size: small;
   color: darkgrey;
 }
+
+.quadrant-1 {
+  background-color: cyan;
+}
+
+.quadrant-2 {
+  background-color: purple;
+}
+
+.quadrant-3 {
+  background-color: lightblue;
+}
+
+.quadrant-4 {
+  background-color: yellow;
+}
